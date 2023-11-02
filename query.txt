@@ -1,0 +1,90 @@
+--------------------------------------users
+create table spring.users(
+id int not null auto_increment primary key,
+name varchar(200),
+username varchar(200),
+pass varchar(200),
+email varchar(200),
+is_active enum('1','0'),
+active_code varchar(10),
+remember_token varchar(400),
+created_at TimeStamp default current_timestamp,
+updated_at timeStamp null default null,
+deleted_at timeStamp null default null
+);
+--------------------------------------groups
+create table spring.groups(
+id int not null auto_increment primary key,
+name_en varchar(200),
+name_fa varchar(200),
+created_at TimeStamp default current_timestamp,
+updated_at timeStamp null default null,
+deleted_at timeStamp null default null
+);
+create table spring.permisions(
+id int not null auto_increment primary key,
+name_en varchar(200),
+name_fa varchar(200),
+created_at TimeStamp default current_timestamp,
+updated_at timeStamp null default null,
+deleted_at timeStamp null default null
+);
+--------------------------------------group_user
+create table spring.group_user(
+id int not null auto_increment primary key,
+user_id int,
+group_id int,
+
+index group_user_user_index(user_id),
+Constraint group_user_user_fk foreign key (user_id) references spring.users(id),
+
+index group_user_group_index(group_id),
+Constraint group_user_group_fk foreign key (group_id) references spring.groups(id),
+
+created_at TimeStamp default current_timestamp
+);
+
+--------------------------------------group_permision
+create table spring.group_permision(
+id int not null auto_increment primary key,
+permision_id int,
+group_id int,
+
+index group_permision_permision_index(permision_id),
+Constraint group_permision_permision_fk foreign key (permision_id) references spring.permisions(id),
+
+index group_permision_group_index(group_id),
+Constraint group_permision_group_fk foreign key (group_id) references spring.groups(id),
+
+created_at TimeStamp default current_timestamp
+);
+
+--------------------------------------vip_permision
+create table spring.vip_permision(
+id int not null auto_increment primary key,
+permision_id int,
+user_id int,
+
+index vip_permision_permision_index(permision_id),
+Constraint vip_permision_permision_fk foreign key (permision_id) references spring.permisions(id),
+
+index vip_permision_user_index(user_id),
+Constraint vip_permision_user_fk foreign key (user_id) references spring.users(id),
+
+created_at TimeStamp default current_timestamp
+);
+
+--------------------------------------block_permision
+create table spring.block_permision(
+id int not null auto_increment primary key,
+permision_id int,
+user_id int,
+
+index block_permision_permision_index(permision_id),
+Constraint block_permision_permision_fk foreign key (permision_id) references spring.permisions(id),
+
+index block_permision_user_index(user_id),
+Constraint block_permision_user_fk foreign key (user_id) references spring.users(id),
+
+created_at TimeStamp default current_timestamp
+);
